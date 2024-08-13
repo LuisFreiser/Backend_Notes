@@ -5,6 +5,7 @@ const app = express();
 
 app.use(express.json()); //!El json-parser funciona para que tome los datos JSON de una solicitud, los transforme en un objeto JavaScript y luego los adjunte a la propiedad body de la solicitud.
 app.use(cors());
+app.use(express.static("dist"));
 
 let notes = [
   {
