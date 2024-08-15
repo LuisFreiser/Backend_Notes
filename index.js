@@ -1,5 +1,7 @@
+require("dotenv").config(); //!Cargamos las variables de entorno .env.
 //!Ultilizamos Express para crear el servidor.
 const express = require("express");
+const Note = require("./models/note"); //!Importamos el modelo de datos de la base de datos.
 const cors = require("cors");
 const app = express();
 
@@ -7,30 +9,13 @@ app.use(express.json()); //!El json-parser funciona para que tome los datos JSON
 app.use(cors());
 app.use(express.static("dist"));
 
-let notes = [
-  {
-    id: 1,
-    content: "HTML is easy",
-    important: true,
-  },
-  {
-    id: 2,
-    content: "Browser can execute only JavaScript",
-    important: false,
-  },
-  {
-    id: 3,
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true,
-  },
-];
-//!Ruta para obtener todas las notas.
-app.get("/", (request, response) => {
-  response.send("<h1>Hello World!</h1>");
-});
+//!Ruta para obtener todas las notas de la base de datos.
+// app.get("/", (request, response) => {
+//   response.send("<h1>Hello World!</h1>");
+// });
 
 app.get("/api/notes", (request, response) => {
-  response.json(notes);
+  Note.find({}).then((notes) => response.json(notes));
 });
 
 //!Generamos un ID para la nueva nota.
@@ -39,7 +24,7 @@ const generateId = () => {
   return maxId + 1;
 };
 
-//!Ruta para crear una nueva nota.
+//!Ruta para crear una nueva nota en la base de datos.
 app.post("/api/notes", (request, response) => {
   const note = request.body;
   if (!note.content) {
@@ -59,7 +44,7 @@ app.post("/api/notes", (request, response) => {
 //!Ruta para buscar una nota.
 app.get("/api/notes/:id", (request, response) => {
   const id = Number(request.params.id);
-  const note = notes.find((note) => note.id === id);
+  const note = Note.find((note) => note.id === id);
   if (note) {
     response.json(note);
   } else {
