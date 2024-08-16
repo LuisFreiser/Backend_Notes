@@ -16,7 +16,11 @@ mongoose
   });
 //!Definiendo el esquema de la base de datos.
 const noteSchema = new mongoose.Schema({
-  content: String,
+  content: {
+    type: String,
+    minlength: 5,
+    required: true, //!Definiendo que el campo 'content' es obligatorio.
+  },
   important: Boolean,
 });
 

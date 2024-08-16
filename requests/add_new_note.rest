@@ -2,6 +2,6 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content" : "CSS is cool",
-    "important" : true
+    "content" : "MongoDB is update",
+    "important" : false
 }
